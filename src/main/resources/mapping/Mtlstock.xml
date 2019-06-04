@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.MtlstockDao">
+
+    <resultMap id="usersResultMap1" type="com.example.demo.entity.MtlstockEty">
+        <id column="id" property="id"/>
+        <result column="currYear" property="currYear"/>
+        <result column="currMonth" property="currMonth"/>
+        <result column="mtlNO" property="mtlNO"/>
+        <result column="qty" property="qty"/>
+        <result column="mtlDesc" property="mtlDesc"/>
+        <result column="price" property="price"/>
+        <result column="docNO" property="docNO"/>
+        <result column="itemNO" property="itemNO"/>
+
+    </resultMap>
+
+    <insert id="saveBat"  parameterType="java.util.List">
+        insert into t_mtl_stock (currYear, currMonth, currDay, mtlNO, qty, mtlDesc, price, docNO,itemNO
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.currYear}  ,#{item.currMonth},#{item.currDay}, #{item.mtlNO}
+            ,#{item.qty}, #{item.mtlDesc} , #{item.price}    ,#{item.docNO} ,#{item.itemNO}
+            )
+        </foreach>
+    </insert>
+
+
+    <select id="findDocByNO"  resultMap="usersResultMap1">
+        select  * from t_mtl_stock a
+        where a.docNO = #{docNO}
+        order by itemNO asc
+	</select>
+</mapper>

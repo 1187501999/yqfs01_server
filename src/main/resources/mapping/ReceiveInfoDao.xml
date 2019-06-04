@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.ReceiveInfoDao">
+
+    <resultMap id="usersResultMap1" type="com.example.demo.entity.ReceiveInfoEty">
+        <id column="id" property="id"/>
+        <result column="docNO" property="docNO"/>
+        <result column="cDate" property="cDate"/>
+    </resultMap>
+
+    <insert id="save" parameterType="com.example.demo.entity.ReceiveInfoEty">
+       insert into t_receive_info  ( docNO )
+        values
+        ( #{docNO}
+        )
+    </insert>
+
+    <update id="updatePrintCntByID" parameterType="java.lang.Integer">
+        UPDATE t_receive_info  SET
+        printCnt =printCnt+1
+        WHERE id
+        =#{id}
+    </update>
+
+    <update id="updatePrintCntByDocNO" parameterType="java.lang.String">
+        UPDATE t_receive_info  SET
+        printCnt =printCnt+1
+        WHERE docNO
+        =#{docNO}
+    </update>
+
+    <select id="receiveCntAll"  resultType="java.lang.String">
+        SELECT count(*) printCnt
+        FROM t_receive_info
+	</select>
+
+    <select id="receiveCntCurrDay"  resultType="java.lang.String">
+        SELECT count(*) printCnt
+        FROM t_receive_info
+        where DATE_FORMAT(cdate, '%Y-%m-%d')= DATE_FORMAT(now(), '%Y-%m-%d')
+	</select>
+
+</mapper>

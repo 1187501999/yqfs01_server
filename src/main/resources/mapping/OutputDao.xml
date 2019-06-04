@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.OutputDao">
+
+    <resultMap id="usersResultMap1" type="com.example.demo.entity.OutputEty">
+        <id column="id" property="id"/>
+        <id column="rtnMsg" property="rtnMsg"/>
+
+        <id column="docNO" property="docNO"/>
+    </resultMap>
+
+
+    <insert id="save" parameterType="com.example.demo.entity.OutputEty">
+       insert into t_out  ( rtnMsg ,docNO )
+        values
+        (#{rtnMsg} ,#{docNO}
+        )
+    </insert>
+
+    <select id="findAll" resultMap="usersResultMap1">
+		select  id, rtnMsg, cDate, ,docNO  from t_out
+	</select>
+
+</mapper>

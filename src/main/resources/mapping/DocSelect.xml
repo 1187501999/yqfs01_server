@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.DocSelectDao">
+
+    <resultMap id="usersResultMap1" type="com.example.demo.entity.DayDetailMdl">
+        <result column="docNO" property="docNO"/>
+        <result column="cDate" property="cDate"/>
+        <result column="mtlCnt" property="mtlCnt"/>
+        <result column="sumQty" property="sumQty"/>
+        <result column="printCnt" property="printCnt"/>
+    </resultMap>
+
+    <select id="findDayReceiveInfoTotal"  resultType="java.lang.String" >
+        select count(*)  total from ( select a.docNO,a.cDate    from t_receive_info a,t_mtl_stock b
+        where a.docNO = b.docNO
+        group by a.docNO,a.cDate
+        order by a.cDate desc ) as u
+	</select>
+
+    <select id="findDayReceiveInfo"  resultMap="usersResultMap1"  parameterType="java.util.Map">
+        select a.docNO, date_format(a.cdate, '%Y-%m-%d %H:%i:%s') cDate,
+        count( distinct b.mtlNO) mtlCnt,sum(b.qty) sumQty from t_receive_info a,t_mtl_stock b
+        where a.docNO = b.docNO
+        group by a.docNO,a.cDate
+        order by a.cDate desc
+        limit #{pageIndex} ,#{pageSize}
+	</select>
+
+    <select id="findDaySum"  resultMap="usersResultMap1">
+        select  concat(curryear,'-',currmonth,'-',currday) cDate,
+        count( distinct b.mtlNO) mtlCnt,sum(b.qty) sumQty ,count(distinct a.docno) receiveCnt from t_receive_info a,t_mtl_stock b
+        where a.docNO = b.docNO and DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(a.cDate)
+        group by curryear,currmonth,currday
+        order by curryear desc ,currmonth desc ,currday desc
+	</select>
+
+
+    <select id="findMonSum"  resultMap="usersResultMap1">
+        select  concat(curryear,'-',currmonth) cDate,
+        count( distinct b.mtlNO) mtlCnt,sum(b.qty) sumQty from t_receive_info a,t_mtl_stock b
+        where a.docNO = b.docNO and a.cDate between date_sub(now(),interval 12 month) and now()
+        group by curryear,currmonth
+        order by curryear desc ,currmonth desc
+	</select>
+
+
+
+</mapper>

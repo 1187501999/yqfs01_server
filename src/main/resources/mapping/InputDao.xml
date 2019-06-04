@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.InputDao">
+
+    <resultMap id="usersResultMap1" type="com.example.demo.entity.InputEty">
+        <id column="id" property="id"/>
+        <id column="url" property="url"/>
+        <id column="paras" property="paras"/>
+        <id column="className" property="className"/>
+
+        <id column="docNO" property="docNO"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="usersResultMap1">
+		select  id, url, className, methodName, paras,userName ,docNO ,cDate  from t_in
+	</select>
+
+    <insert id="save" parameterType="com.example.demo.entity.InputEty">
+       insert into t_in  (url, className, methodName, paras,userName ,docNO )
+        values
+        (#{url}  ,#{className},#{methodName}, #{paras},#{userName} ,#{docNO}
+        )
+    </insert>
+
+</mapper>
